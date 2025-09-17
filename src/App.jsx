@@ -29,6 +29,15 @@ function App() {
     else setCurrentpage("home");
   }, [role]);
 
+  // Logout handler
+  const handleLogout = () => {
+    setRole("guest");
+    setCurrentpage("home");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("name");
+  };
+
   return (
     <>
       <div className="flex flex-col min-h-screen bg-gray-50 w-screen">
@@ -47,7 +56,10 @@ function App() {
                   Login/Signup
                 </button>
               ) : (
-                <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100">
+                <button
+                  className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100"
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
               )}
