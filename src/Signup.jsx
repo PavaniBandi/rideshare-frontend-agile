@@ -7,11 +7,12 @@ export default function Signup() {
   const [role, setRole] = useState("RIDER");
 
   return (
-    <form action="">
+    <form action="" className="space-y-4">
       <input
         type="text"
         placeholder="Name"
         value={name}
+        className="w-full border rounded px-3 py-2 bg-white text-gray-900"
         onChange={(e) => setName(e.target.value)}
         required
       />
@@ -19,6 +20,7 @@ export default function Signup() {
         type="email"
         placeholder="Email"
         value={email}
+        className="w-full border rounded px-3 py-2 bg-white text-gray-900"
         onChange={(e) => setEmail(e.target.value)}
         required
       />
@@ -26,15 +28,25 @@ export default function Signup() {
         type="password"
         placeholder="Password"
         value={password}
+        className="w-full border rounded px-3 py-2 bg-white text-gray-900"
         onChange={(e) => setPassword(e.target.value)}
         required
       />
 
-      <select value={role} onChange={(e) => setRole(e.target.value)}>
+      <select
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+        className="w-full border rounded px-3 py-2 bg-white text-gray-900"
+      >
         <option value="RIDER">Rider</option>
         <option value="DRIVER">Driver</option>
       </select>
-      <button type="submit">Signup</button>
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+      >
+        Signup
+      </button>
     </form>
   );
 }

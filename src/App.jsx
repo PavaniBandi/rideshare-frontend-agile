@@ -1,12 +1,34 @@
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import img1 from "./assets/1.png";
 import Login from "./Login.jsx";
 import Signup from "./Signup.jsx";
+import RiderDashboard from "./pages/RiderDashboard.jsx";
+import DriverDashboard from "./pages/DriverDashboard.jsx";
 
 function App() {
   const [role, setRole] = useState("guest");
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("login");
+  const [currentPage, setCurrentpage] = useState("home");
+  //currentPage
+  //useEffect role->setCurrentpage
+
+  const handleLogin = (data) => {
+    setRole(data.role.toLowerCase());
+    setShowAuth(false);
+    setCurrentpage(data.role.toLowerCase());
+  };
+
+  const handleSignup = () => {
+    setAuthMode("login");
+  };
+
+  useEffect(() => {
+    if (role === "rider") setCurrentpage("rider");
+    else if (role === "driver") setCurrentpage("driver");
+    else setCurrentpage("home");
+  }, [role]);
+
   return (
     <>
       <div className="flex flex-col min-h-screen bg-gray-50 w-screen">
@@ -34,174 +56,187 @@ function App() {
         </header>
 
         <main className="flex-1 overflow-y-auto w-full">
-          {/* Home Section */}
-          <section className="py-16 w-full bg-gray-100 flex flex-col md:flex-row items-center justify-center gap-12 ">
-            <div className="flex-1 flex flex-col justify-center items-start max-w-xl px-6">
-              <h2 className="text-4xl font-bold mb-2 text-gray-900">
-                Get Quick Rides,
-                <br />
-                <span className="inline-block border-b-4 border-yellow-400 pb-1">
-                  Low Fares
-                </span>
-              </h2>
-              <p className="text-xl text-gray-700 mb-8 mt-4">
-                In Rapido we ensure our customers get rides quickly at the most
-                affordable prices.
-              </p>
-              <button className="bg-gray-900 text-white text-lg font-semibold px-8 py-3 rounded-full flex items-center gap-2 shadow hover:bg-gray-800 transition">
-                Book a ride <span className="ml-2">&rarr;</span>
-              </button>
-            </div>
-            <div className="flex-1 flex justify-center items-center max-w-lg px-6">
-              <img
-                src={img1}
-                alt="Service Collage"
-                className="rounded-2xl object-cover w-full h-80"
-              />
-            </div>
-          </section>
-
-          {/* How it works */}
-          <section className="py-16 w-full bg-gradient-to-r  from-yellow-50 to from-blue-50">
-            <h2 className="text-3xl font-bold text-center mb-10 text-gray-900">
-              How it Works
-            </h2>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-5xl mx-auto">
-              {[
-                {
-                  icon: "📱",
-                  title: "Request a Ride",
-                  desc: "Enter your pickup and drop locations and request a ride instantly.",
-                },
-                {
-                  icon: "🤝",
-                  title: "Get Matched",
-                  desc: "We match you with the nearest driver for a quick pickup.",
-                },
-                {
-                  icon: "🛵",
-                  title: "Enjoy Your Trip",
-                  desc: "Sit back, relax, and enjoy a safe, affordable ride.",
-                },
-                {
-                  icon: "💳",
-                  title: "Easy Payment",
-                  desc: "Pay seamlessly with cash, card, or wallet after your ride.",
-                },
-              ].map((step, idx) => (
-                <div
-                  key={step.title}
-                  className="flex flex-col items-center bg-white rounded-xl p-6 w-64 transition-transform hover:-translate-y-2"
-                >
-                  <div className="text-5xl mb-4">{step.icon}</div>
-                  <h3 className="font-bold text-lg mb-2 text-gray-800">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 text-center">{step.desc}</p>
-                  {idx < 3 && (
-                    <div className="w-8 h-1 bg-yellow-400 mt-4 mb-0"></div>
-                  )}
+          {currentPage === "rider" ? (
+            <RiderDashboard />
+          ) : currentPage === "driver" ? (
+            <DriverDashboard />
+          ) : (
+            <>
+              {/* Home Section */}
+              <section className="py-16 w-full bg-gray-100 flex flex-col md:flex-row items-center justify-center gap-12 ">
+                <div className="flex-1 flex flex-col justify-center items-start max-w-xl px-6">
+                  <h2 className="text-4xl font-bold mb-2 text-gray-900">
+                    Get Quick Rides,
+                    <br />
+                    <span className="inline-block border-b-4 border-yellow-400 pb-1">
+                      Low Fares
+                    </span>
+                  </h2>
+                  <p className="text-xl text-gray-700 mb-8 mt-4">
+                    In Rapido we ensure our customers get rides quickly at the
+                    most affordable prices.
+                  </p>
+                  <button className="bg-gray-900 text-white text-lg font-semibold px-8 py-3 rounded-full flex items-center gap-2 shadow hover:bg-gray-800 transition">
+                    Book a ride <span className="ml-2">&rarr;</span>
+                  </button>
                 </div>
-              ))}
-            </div>
-          </section>
+                <div className="flex-1 flex justify-center items-center max-w-lg px-6">
+                  <img
+                    src={img1}
+                    alt="Service Collage"
+                    className="rounded-2xl object-cover w-full h-80"
+                  />
+                </div>
+              </section>
 
-          {/* Stats */}
-          <section className="py-16 w-full bg-white">
-            <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-12">
-              {[
-                { label: "Rides Completed", value: "1M+" },
-                { label: "Rides 1", value: "1M+" },
-                { label: "Rides 2", value: "1M+" },
-                { label: "Rides 3", value: "1M+" },
-              ].map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center">
-                  <div className="text-4xl font-extrabold text-blue-600 mb-2 animate-pulse">
-                    {stat.value}
+              {/* How it works */}
+              <section className="py-16 w-full bg-gradient-to-r  from-yellow-50 to from-blue-50">
+                <h2 className="text-3xl font-bold text-center mb-10 text-gray-900">
+                  How it Works
+                </h2>
+                <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-5xl mx-auto">
+                  {[
+                    {
+                      icon: "📱",
+                      title: "Request a Ride",
+                      desc: "Enter your pickup and drop locations and request a ride instantly.",
+                    },
+                    {
+                      icon: "🤝",
+                      title: "Get Matched",
+                      desc: "We match you with the nearest driver for a quick pickup.",
+                    },
+                    {
+                      icon: "🛵",
+                      title: "Enjoy Your Trip",
+                      desc: "Sit back, relax, and enjoy a safe, affordable ride.",
+                    },
+                    {
+                      icon: "💳",
+                      title: "Easy Payment",
+                      desc: "Pay seamlessly with cash, card, or wallet after your ride.",
+                    },
+                  ].map((step, idx) => (
+                    <div
+                      key={step.title}
+                      className="flex flex-col items-center bg-white rounded-xl p-6 w-64 transition-transform hover:-translate-y-2"
+                    >
+                      <div className="text-5xl mb-4">{step.icon}</div>
+                      <h3 className="font-bold text-lg mb-2 text-gray-800">
+                        {step.title}
+                      </h3>
+                      <p className="text-gray-600 text-center">{step.desc}</p>
+                      {idx < 3 && (
+                        <div className="w-8 h-1 bg-yellow-400 mt-4 mb-0"></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Stats */}
+              <section className="py-16 w-full bg-white">
+                <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-12">
+                  {[
+                    { label: "Rides Completed", value: "1M+" },
+                    { label: "Rides 1", value: "1M+" },
+                    { label: "Rides 2", value: "1M+" },
+                    { label: "Rides 3", value: "1M+" },
+                  ].map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="flex flex-col items-center"
+                    >
+                      <div className="text-4xl font-extrabold text-blue-600 mb-2 animate-pulse">
+                        {stat.value}
+                      </div>
+                      <div className="text-lg text-gray-700 font-semibold">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Why Choose Us Section */}
+              <section className="py-16 w-full bg-gradient-to-r from-blue-50 to-purple-50">
+                <h2 className="text-3xl font-bold text-center mb-10 text-gray-900">
+                  Why Choose Us?
+                </h2>
+                <div className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
+                  {[
+                    {
+                      icon: "⏱️",
+                      title: "Instant Booking",
+                      desc: "Book a ride in seconds with our easy-to-use app.",
+                    },
+                    {
+                      icon: "🛡️",
+                      title: "Verified Drivers",
+                      desc: "All drivers are background-checked and trained.",
+                    },
+                    {
+                      icon: "💸",
+                      title: "Affordable Fares",
+                      desc: "Transparent pricing with no hidden charges.",
+                    },
+                    {
+                      icon: "📍",
+                      title: "Live Tracking",
+                      desc: "Track your ride in real-time from start to finish.",
+                    },
+                    {
+                      icon: "📞",
+                      title: "24/7 Support",
+                      desc: "We're here for you anytime, anywhere.",
+                    },
+                  ].map((benefit) => (
+                    <div
+                      key={benefit.title}
+                      className="flex flex-col items-center bg-white rounded-xl shadow-md p-6 w-64 transition-transform hover:-translate-y-2 hover:shadow-xl"
+                    >
+                      <div className="text-4xl mb-4">{benefit.icon}</div>
+                      <h3 className="font-bold text-lg mb-2 text-gray-800">
+                        {benefit.title}
+                      </h3>
+                      <p className="text-gray-600 text-center">
+                        {benefit.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Download */}
+              <section className="py-16 w-full bg-black">
+                <h2 className="text-3xl font-bold text-center mb-8 text-white">
+                  Download Now
+                </h2>
+                <div className="flex flex-col md:flex-row justify-center items-center gap-8 w-full">
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={img1}
+                      alt=" Rapido App"
+                      className="w-20 h-20 mb-4 rounded-lg"
+                    />
+                    <div className="text-white text-center font-semibold">
+                      Rapido: Bike-Taxi, Auto & Cabs
+                    </div>
                   </div>
-                  <div className="text-lg text-gray-700 font-semibold">
-                    {stat.label}
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={img1}
+                      alt=" Rapido App"
+                      className="w-20 h-20 mb-4 rounded-lg"
+                    />
+                    <div className="text-white text-center font-semibold">
+                      Rapido Captain: Drive & Earn
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Why Choose Us Section */}
-          <section className="py-16 w-full bg-gradient-to-r from-blue-50 to-purple-50">
-            <h2 className="text-3xl font-bold text-center mb-10 text-gray-900">
-              Why Choose Us?
-            </h2>
-            <div className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
-              {[
-                {
-                  icon: "⏱️",
-                  title: "Instant Booking",
-                  desc: "Book a ride in seconds with our easy-to-use app.",
-                },
-                {
-                  icon: "🛡️",
-                  title: "Verified Drivers",
-                  desc: "All drivers are background-checked and trained.",
-                },
-                {
-                  icon: "💸",
-                  title: "Affordable Fares",
-                  desc: "Transparent pricing with no hidden charges.",
-                },
-                {
-                  icon: "📍",
-                  title: "Live Tracking",
-                  desc: "Track your ride in real-time from start to finish.",
-                },
-                {
-                  icon: "📞",
-                  title: "24/7 Support",
-                  desc: "We're here for you anytime, anywhere.",
-                },
-              ].map((benefit) => (
-                <div
-                  key={benefit.title}
-                  className="flex flex-col items-center bg-white rounded-xl shadow-md p-6 w-64 transition-transform hover:-translate-y-2 hover:shadow-xl"
-                >
-                  <div className="text-4xl mb-4">{benefit.icon}</div>
-                  <h3 className="font-bold text-lg mb-2 text-gray-800">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-gray-600 text-center">{benefit.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Download */}
-          <section className="py-16 w-full bg-black">
-            <h2 className="text-3xl font-bold text-center mb-8 text-white">
-              Download Now
-            </h2>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-8 w-full">
-              <div className="flex flex-col items-center">
-                <img
-                  src={img1}
-                  alt=" Rapido App"
-                  className="w-20 h-20 mb-4 rounded-lg"
-                />
-                <div className="text-white text-center font-semibold">
-                  Rapido: Bike-Taxi, Auto & Cabs
-                </div>
-              </div>
-              <div className="flex flex-col items-center">
-                <img
-                  src={img1}
-                  alt=" Rapido App"
-                  className="w-20 h-20 mb-4 rounded-lg"
-                />
-                <div className="text-white text-center font-semibold">
-                  Rapido Captain: Drive & Earn
-                </div>
-              </div>
-            </div>
-          </section>
+              </section>
+            </>
+          )}
         </main>
 
         {showAuth && (
@@ -232,7 +267,11 @@ function App() {
                   Signup
                 </button>
               </div>
-              {authMode === "login" ? <Login /> : <Signup />}
+              {authMode === "login" ? (
+                <Login onLogin={handleLogin} />
+              ) : (
+                <Signup onSignup={handleSignup} />
+              )}
             </div>
           </div>
         )}
