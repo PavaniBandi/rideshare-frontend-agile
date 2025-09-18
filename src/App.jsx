@@ -6,7 +6,10 @@ import RiderDashboard from "./pages/RiderDashboard.jsx";
 import DriverDashboard from "./pages/DriverDashboard.jsx";
 
 function App() {
-  const [role, setRole] = useState("guest");
+  // const [role, setRole] = useState("guest");
+  const [role, setRole] = useState(
+    localStorage.getItem("role")?.toLowerCase() || "guest"
+  );
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const [currentPage, setCurrentpage] = useState("home");
